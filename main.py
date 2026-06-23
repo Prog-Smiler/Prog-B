@@ -1,70 +1,56 @@
-#Importing packages
-
 import speech_recognition as sr
 import pygame
-import datetime
-import webbrowser
-import os
-import random
-import pyjokes
+import time
 import asyncio
+#need to work on edge-tts
 import edge_tts
 
-listener = sr.Recognizer()
 
-#Talk Function:
-def talk(test):
-    print(f"Prog B: {test}")
+r  = sr.Recognizer()
 
-    async def _say():
-        voice = "en-US-AriaNeural"
-        communication = edge_tts.Communicate("voice.mp3")
+#Voice Setting
+Voice = "en-US-GuyNeural"
+voice_file = "output.mp3"
 
-    asyncio.run(_say())
-    pygame.mixer.init()
-    pygame.mixer.music.load("voice.mp3")  
-    pygame.mixer.music.play()
+async def speak():
+        print("Jarvis: ", text)
+        communicate = edge_tts.Communicate(text, Voice)
+        await communicate.save(voice_file)
 
-    while pygame.mixer.music.get_busy():
-        pass
-    os.remove("voice.mp3")
-
-    def take_command():
-        try:
-            with sr.Microphone() as source:
-                listener.adjust_for_ambient_noise(source, duration = 1)
-                print("Prog B: Listening...")
-                audio = listener.listen(source)
-                command = listener.recognize_google(audio)
-                command = command.lower()
-                print(f"Prog B: You said: {command}")
-        except Exception as e:
-            print("Error:", e)
-            command = ""
-        return command
+#Talk
+async def talk(text):
     
-    def run_progb():
-        talk("Hi, How can I help you today?")
+    
+    await speak()
+    pygame.mixer.init()
+    pygame.mixer.music.load(voice_file)
+    pygame.mixer.music.play()
+    
+    while pygame.mixer.music.get_busy():
+        await asyncio.sleep(0.1)
 
-        while True:
-            command = take_command()
-
-            if 'hello' in command:
-                talk("Hi bro")
+while True:
+    try:
+        with sr.Microphone() as source:
+            print("Listening...")
             
-            elif 'how are you' in command:
-                talk("Rocking and rolling bro ;D")
-
-            elif "purpose" in command or "what can you do" in command:
-                talk('''Hi! I am Prog B, a virtual assistant created by my creator, 
-                    Prog Smiler. I can assist you by opening any website of your
-                    choice or from the list of websites you store, i can tell you
-                    date/time, and also search for anything on google, crack dad jokes,
-                    give you a random number and also a basic calculator.
-                    Ready to rock bro?''')
-            elif 'stop' in command or 'exit' in command or 'bye' in command:
-                talk("Goodbye bro!")
+            r.adjust_for_ambient_noise(source, duration=0.2)
+            audio = r.listen(source)
+            text = r.recognize_google(audio)
+            text = text.lower()  
+            print("You said:", text)
+            
+            if "exit" in text:
+                print("You said: ", text)
+                asyncio.run(talk())
                 break
-            elif command:
-                talk("I think i am getting dumb! sorry man i could not get that. sad emoji sad emoji #sad life")
-    run_progb()
+
+    except sr.RequestError as e:
+        print("Could not request results; {0}".format(e))
+
+    except sr.UnknownValueError:
+        print("Could not understand audio")
+
+    except KeyboardInterrupt:
+        print("Program terminated by user")
+        break

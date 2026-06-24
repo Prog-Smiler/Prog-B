@@ -46,7 +46,7 @@ def take_command():
     return command
 
 
-def run_jarvis():
+def run_progb():
     talk("Hello, I'm Prog B. How can I help you?")
 
     while True:
@@ -162,5 +162,5 @@ def run_jarvis():
             talk("Sorry, I didn't get that.")
 
 
-# Start Jarvis
-run_jarvis()
+
+run_progb()

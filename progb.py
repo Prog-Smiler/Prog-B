@@ -14,7 +14,6 @@ import subprocess
 listener = sr.Recognizer()
 running = False
 
-# GUI callback (gets replaced by gui.py)
 log_callback = print
 
 
@@ -24,7 +23,7 @@ def log(message):
 mic = sr.Microphone()
 
 
-# calibrate once at startup
+
 with mic as source:
     print("Calibrating microphone...")
     listener.adjust_for_ambient_noise(source, duration=2)

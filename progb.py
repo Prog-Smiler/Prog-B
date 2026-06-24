@@ -1,5 +1,4 @@
 import speech_recognition as sr
-import time
 import datetime
 import webbrowser
 import os
@@ -7,47 +6,75 @@ import random
 import pyjokes
 import asyncio
 import edge_tts
-import pygame
+import subprocess
+
+
 
 # Initialize the recognizer and TTS engine
 listener = sr.Recognizer()
+running = False
+
+# GUI callback (gets replaced by gui.py)
+log_callback = print
+
+
+def log(message):
+    log_callback(message)
+
+mic = sr.Microphone()
+
+
+# calibrate once at startup
+with mic as source:
+    print("Calibrating microphone...")
+    listener.adjust_for_ambient_noise(source, duration=2)
 
 
 def talk(text):
-    print(f"Prog B: {text}")
-
+    log(f"Prog B: {text}")
     async def _say():
         voice = "en-US-AriaNeural"
         communicate = edge_tts.Communicate(text, voice)
         await communicate.save("voice.mp3")
 
     asyncio.run(_say())
-    pygame.mixer.init()
-    pygame.mixer.music.load("voice.mp3")
-    pygame.mixer.music.play()
 
-    while pygame.mixer.music.get_busy():
-        time.sleep(0.1)
+    subprocess.run([
+        "mpv",
+        "--no-video",
+        "--really-quiet",     # hides mpv progress spam
+        "voice.mp3"
+    ])
 
     os.remove("voice.mp3")
 
 
 def take_command():
     try:
-        with sr.Microphone() as source:
-            listener.adjust_for_ambient_noise(source, duration=1)
-            print("Listening...")
-            audio = listener.listen(source)
+        with mic as source:
+            log("Listening..")
+
+            audio = listener.listen(
+                source,
+                timeout=5,
+                phrase_time_limit=8
+            )
+
             command = listener.recognize_google(audio)
             command = command.lower()
-            print("You said:", command)
-    except:
-        command = ""
-    return command
+            log(f"You said: {command}")
+
+            return command
+
+    except Exception as e:
+        log(f"Error: {e}")
+        return ""
 
 
 def run_progb():
-    talk("Hello, I'm Prog B. How can I help you?")
+    global running
+    running = True
+    talk("Hey! Welcome back! ")
 
     while True:
         command = take_command()
@@ -62,8 +89,8 @@ def run_progb():
             talk(
                 "Hi! I’m Prog B, your personal AI assistant, built to help you with everyday tasks and make your digital life smoother. I can play your favorite music, answer questions, manage notes, give you useful information, and assist with your school projects or research. My goal is to be your reliable, intelligent companion—ready to support you anytime you need help or want to explore something new. Just speak, and I’m here to respond.")
         elif 'time' in command:
-            time = datetime.datetime.now().strftime('%I:%M %p')
-            talk(f"Current time is {time}")
+            current_time = datetime.datetime.now().strftime('%I:%M %p')
+            talk(f"Current time is {current_time}")
 
         elif 'open youtube' in command:
             webbrowser.open("https://www.youtube.com")
@@ -161,6 +188,6 @@ def run_progb():
         elif command:
             talk("Sorry, I didn't get that.")
 
-
-
-run_progb()
+def stop_progb():
+    global running
+    running = False

@@ -135,47 +135,6 @@ def run_progb():
             talk(joke)
 
 
-        elif "random number" in command:
-            talk("Yo quick thing, can you give me a lowest number and a highest number to select between? ")
-            low = int(input("Enter the lowest number: "))
-            high = int(input("Enter the highest number: "))
-            number = random.randint(low, high)
-            talk(f"Here is a random number for you: {number}")
-
-
-
-        elif "game" in command:
-            game_choice = input("Enter the game you want to play? 1)Prog Dozer(online)\n2)Astro warrior(online)\n:")
-            talk("Starting the game. Have fun!")
-            if game_choice == '1':
-                webbrowser.open("https://prog-smiler.itch.io/prog-doze")
-            elif game_choice == '2':
-                webbrowser.open("https://tic80.com/play?cart=4218")
-            else:
-                talk("Invalid choice, please try again.")
-
-
-        elif "calculator" in command:
-            talk("Calculator mode on ")
-            num1 = float(input("Enter first number: "))
-            num2 = float(input("Enter second number: "))
-            operation = input("Enter operation (+, -, *, /): ")
-            if operation == '+':
-                result = num1 + num2
-                talk(f"The result is {result}")
-            elif operation == '-':
-                result = num1 - num2
-                talk(f"The result is {result}")
-            elif operation == '*':
-                result = num1 * num2
-                talk(f"The result is {result}")
-            elif operation == '/':
-                result = num1 / num2
-                talk(f"The result is {result}")
-            else:
-                result = "Invalid operation"
-                talk(result)
-            talk("Calculator mode off")
 
         elif "what is" in command:
             webbrowser.open(f"https://www.google.com/search?q={command}")

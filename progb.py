@@ -106,7 +106,7 @@ def run_progb():
 
         elif "date" in command:
             date = datetime.datetime.now().strftime('%Y-%m-%d')
-            talk(f"Today's date is {date}")
+            talk(f"Today's dny website you want (You will have to write the website name with it's domain name eg: 'google.com')ate is {date}")
 
         elif "who made you" in command:
             talk("I was created by Pragyanam Mahat who loves coding.")

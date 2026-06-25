@@ -1,0 +1,33 @@
+name: Build Windows EXE
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Download code
+        uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14.4'
+
+      - name: Install packages
+        run: |
+          pip install pyinstaller
+          pip install customtkinter SpeechRecognition pyjokes edge-tts
+
+      - name: Build EXE
+        run: |
+          pyinstaller --onefile --windowed main.py
+
+      - name: Save EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: ProgB-Windows
+          path: dist/*.exe

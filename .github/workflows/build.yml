@@ -1,33 +1,54 @@
-name: Build Windows EXE
+name: Build ProgB
 
 on:
   push:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-windows:
     runs-on: windows-latest
 
     steps:
-      - name: Download code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.14.4'
+          python-version: "3.14.4"
 
       - name: Install packages
         run: |
           pip install pyinstaller
           pip install customtkinter SpeechRecognition pyjokes edge-tts
 
-      - name: Build EXE
+      - name: Build Windows EXE
         run: |
-          pyinstaller --onefile --windowed main.py
+          pyinstaller --onefile --windowed gui.py
 
-      - name: Save EXE
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: ProgB-Windows
-          path: dist/*.exe
+          path: dist/*
+
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14.4"
+
+      - name: Install packages
+        run: |
+          pip install pyinstaller
+          pip install customtkinter SpeechRecognition pyjokes edge-tts
+
+      - name: Build Linux Binary
+        run: |
+          pyinstaller --onefile gui.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ProgB-Linux
+          path: dist/*

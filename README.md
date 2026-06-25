@@ -6,8 +6,7 @@ Run the gui.py file to run the program.
 List to it's commands:
 
 1. 'hi' or 'hello' -> It Greets you.
-2. 'how are you' -> js says smthng haha.   
-3. 'website list' -> Shows you the list of websites that is stored in a list
+2. 'how are you' -> js says smthng haha.
 4. 'purpose' or 'what can you do' -> Gives you a brief intro about itself
 5. 'who made you' -> displays the creator's name
 6. 'google' -> search anything on google

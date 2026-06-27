@@ -2,7 +2,6 @@ import speech_recognition as sr
 import datetime
 import webbrowser
 import os
-import random
 import pyjokes
 import asyncio
 import edge_tts
@@ -56,7 +55,7 @@ def take_command():
             audio = listener.listen(
                 source,
                 timeout=5,
-                phrase_time_limit=8
+                phrase_time_limit=10
             )
 
             command = listener.recognize_google(audio)
@@ -86,7 +85,7 @@ def run_progb():
 
         elif "purpose" in command or "what can you do" in command:
             talk(
-                "Hi! I’m Prog B, your personal AI assistant, built to help you with everyday tasks and make your digital life smoother. I can play your favorite music, answer questions, manage notes, give you useful information, and assist with your school projects or research. My goal is to be your reliable, intelligent companion—ready to support you anytime you need help or want to explore something new. Just speak, and I’m here to respond.")
+                "Hi! I’m Prog B, your personal assistant, built to help you with everyday tasks and make your digital life smoother. I can play your favorite music, answer questions, manage notes, give you useful information, and assist with your school projects or research. My goal is to be your reliable, intelligent companion—ready to support you anytime you need help or want to explore something new. Just speak, and I’m here to respond.")
         elif 'time' in command:
             current_time = datetime.datetime.now().strftime('%I:%M %p')
             talk(f"Current time is {current_time}")
@@ -149,3 +148,4 @@ def run_progb():
 def stop_progb():
     global running
     running = False
+    exit(0)

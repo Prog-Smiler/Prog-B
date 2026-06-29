@@ -18,7 +18,7 @@ jobs:
       - name: Install packages
         run: |
           pip install pyinstaller
-          pip install customtkinter SpeechRecognition pyjokes edge-tts
+          pip install customtkinter SpeechRecognition pyjokes edge-tts pyaudio
 
       - name: Build Windows EXE
         run: |
@@ -39,10 +39,15 @@ jobs:
         with:
           python-version: "3.14.4"
 
+      - name: Install system audio deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y portaudio19-dev
+
       - name: Install packages
         run: |
           pip install pyinstaller
-          pip install customtkinter SpeechRecognition pyjokes edge-tts
+          pip install customtkinter SpeechRecognition pyjokes edge-tts pyaudio
 
       - name: Build Linux Binary
         run: |

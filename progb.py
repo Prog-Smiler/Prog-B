@@ -70,11 +70,19 @@ def take_command():
 
 
 def run_progb():
-    global running
+    global running, mic
+
+    running = True
+
+    mic = sr.Microphone()
+
+    with mic as source:
+        log("Calibrating microphone...")
+        listener.adjust_for_ambient_noise(source, duration=2)
     running = True
     talk("Hey! Welcome back! ")
 
-    while True:
+    while running:
         command = take_command()
 
         if 'hello' in command:
@@ -148,4 +156,4 @@ def run_progb():
 def stop_progb():
     global running
     running = False
-    exit(0)
+    

@@ -5,9 +5,11 @@ import os
 import pyjokes
 import asyncio
 import edge_tts
-import subprocess
+import pygame
+import time
 
 
+pygame.mixer.init()
 
 # Initialize the recognizer and TTS engine
 listener = sr.Recognizer()
@@ -23,11 +25,6 @@ mic = sr.Microphone()
 
 
 
-with mic as source:
-    print("Calibrating microphone...")
-    listener.adjust_for_ambient_noise(source, duration=2)
-
-
 def talk(text):
     log(f"Prog B: {text}")
     async def _say():
@@ -36,13 +33,6 @@ def talk(text):
         await communicate.save("voice.mp3")
 
     asyncio.run(_say())
-
-    subprocess.run([
-        "mpv",
-        "--no-video",
-        "--really-quiet",     # hides mpv progress spam
-        "voice.mp3"
-    ])
 
     os.remove("voice.mp3")
 

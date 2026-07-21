@@ -20,3 +20,5 @@ List to it's commands:
 14. 'date' -> Informs you about todays date
 15. 'time ' -> Informs you about Time right now
 16. 'exit' or 'quit' -> Ends the program
+
+#!!This project is fully tested on Linux system but not Windows, so this program is more Linux focused than Windows!!

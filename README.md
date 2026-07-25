@@ -22,3 +22,6 @@ List to it's commands:
 16. 'exit' or 'quit' -> Ends the program
 
 # !!This project is fully tested on Linux system but not Windows, so this program is more Linux focused than Windows!!
+
+# Installation
+-> Go to the releases and install for the os that you want to download. (linux or windows) and once it's downloaded, unzip the folder and run the program.
